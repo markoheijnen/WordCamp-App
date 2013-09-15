@@ -34,11 +34,15 @@ class WordCamp_App {
 		global $wpdb;
 
 		if( ! is_multisite() )
-			return array( 'blog_id' => 1, 'domain' => home_url(), 'path' => '/' );
+			return array( 'blog_id' => 1, 'url' => home_url() );
 
 		// Not using wp_get_sites due limited functionality
-		$query     = "SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = 1 AND blog_id != 1 AND public = 1 AND archived = '0' AND mature = 0 AND spam = 0 AND deleted = 0";
+		$query     = "SELECT blog_id, domain as url FROM $wpdb->blogs WHERE site_id = 1 AND blog_id != 1 AND public = 1 AND archived = '0' AND mature = 0 AND spam = 0 AND deleted = 0";
 		$wordcamps = $wpdb->get_results( $query, ARRAY_A );
+
+		foreach( $wordcamps as &$wordcamp ) {
+			$wordcamp['title'] = get_blog_option( $wordcamp['blog_id'], 'blogname' );
+		}
 
 		return $wordcamps;
 	}
