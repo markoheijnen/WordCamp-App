@@ -42,6 +42,7 @@ class WordCamp_App {
 
 		foreach( $wordcamps as &$wordcamp ) {
 			$wordcamp['title'] = get_blog_option( $wordcamp['blog_id'], 'blogname' );
+			$wordcamp['date']  = "26&27 October";
 		}
 
 		return $wordcamps;
